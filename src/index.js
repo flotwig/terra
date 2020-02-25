@@ -166,7 +166,7 @@ function drawTerra(W, H) {
   scene.add(mesh)
 }
 
-const W = world.W = 100
-const H = world.H = 100
+const W = world.W = 50
+const H = world.H = 50
 
 drawTerra(W, H)

@@ -139,7 +139,6 @@ var OrbitControls = function ( object, domElement ) {
 
 	// this method is exposed, but perhaps it would be better if we can make it private...
 	this.update = function () {
-
 		var offset = new Vector3();
 
 		// so camera.up is the orbit axis
@@ -160,6 +159,13 @@ var OrbitControls = function ( object, domElement ) {
 
 			// angle from z-axis around y-axis
 			spherical.setFromVector3( offset );
+
+			// xor
+			if (leftPanPressed != rightPanPressed) {
+				var element = scope.domElement;
+
+				rotateLeft( 2 * 10 * (leftPanPressed ? -1 : 1) * Math.PI * scope.rotateSpeed / element.clientHeight ); // yes, height
+			}
 
 			if ( scope.autoRotate && state === STATE.NONE ) {
 
@@ -318,6 +324,9 @@ var OrbitControls = function ( object, domElement ) {
 	var dollyStart = new Vector2();
 	var dollyEnd = new Vector2();
 	var dollyDelta = new Vector2();
+
+	let leftPanPressed = false, rightPanPressed = false
+
 
 	function getAutoRotationAngle() {
 
@@ -564,6 +573,16 @@ var OrbitControls = function ( object, domElement ) {
 
 	}
 
+	function handleKeyUp({ key }) {
+		key = key.toLowerCase()
+		if (key === 'q' && leftPanPressed) {
+			leftPanPressed = false
+		}
+		if (key === 'e' && rightPanPressed) {
+			rightPanPressed = false
+		}
+	}
+
 	function handleKeyDown( event ) {
 
 		var needsUpdate = false;
@@ -590,22 +609,17 @@ var OrbitControls = function ( object, domElement ) {
 				needsUpdate = true;
 				break;
 
-    }
+		}
 
-
-    if (event.key === 'q') {
-      var element = scope.domElement;
-
-      rotateLeft( 2 * 10 * Math.PI * scope.rotateSpeed / element.clientHeight ); // yes, height
-      needsUpdate = true;
-    }
-
-    if (event.key === 'e') {
-      var element = scope.domElement;
-
-      rotateLeft( -2 * 10 * Math.PI * scope.rotateSpeed / element.clientHeight ); // yes, height
-      needsUpdate = true;
-    }
+		const key = event.key.toLowerCase()
+		if (key === 'q' && !leftPanPressed) {
+			leftPanPressed = true
+			needsUpdate = true
+		}
+		if (key === 'e' && !rightPanPressed) {
+			rightPanPressed = true
+			needsUpdate = true
+		}
 
 		if ( needsUpdate ) {
 
@@ -957,6 +971,14 @@ var OrbitControls = function ( object, domElement ) {
 
 	}
 
+	function onKeyUp( event ) {
+
+		if ( scope.enabled === false || scope.enableKeys === false || scope.enablePan === false ) return;
+
+		handleKeyUp( event );
+
+	}
+
 	function onTouchStart( event ) {
 
 		if ( scope.enabled === false ) return;
@@ -1132,6 +1154,7 @@ var OrbitControls = function ( object, domElement ) {
 	scope.domElement.addEventListener( 'touchmove', onTouchMove, false );
 
 	scope.domElement.addEventListener( 'keydown', onKeyDown, false );
+	scope.domElement.addEventListener( 'keyup', onKeyUp, false );
 
 	// make sure element can receive keys.
 
