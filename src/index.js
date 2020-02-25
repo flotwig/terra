@@ -13,11 +13,14 @@ function createRenderer() {
 function createCamera() {
   const camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 1000 );
 
-  camera.position.z = 30;
-  camera.position.x = 30
-  camera.position.y = 15
+  camera.up = new THREE.Vector3(0,0,1)
 
-  camera.rotation.y = Math.PI /4
+  camera.position.z = 30;
+
+  camera.rotation.z = Math.PI / 6
+
+  // camera.rotation.y = -Math.PI /4
+  // camera.rotation.z = -Math.PI / 4
 
   return camera
 }
@@ -155,14 +158,15 @@ function drawTerra(W, H) {
   //   transparent: true
   // }))
   // const mat = new THREE.MeshDepthMaterial({ side: THREE.DoubleSide, visible: true, transparent: false, depthTest: true, depthWrite: true, wireframe: true })
-  const mat = new THREE.MeshNormalMaterial()
-  var mesh= new THREE.Mesh( geom, mat );
+  const mat = new THREE.MeshPhongMaterial()
+  var mesh= world.mesh = new THREE.Mesh( geom, mat );
   mesh.castShadow = true
   mesh.receiveShadow = true
+
   scene.add(mesh)
 }
 
-const W = world.W = 30
-const H = world.H = 30
+const W = world.W = 100
+const H = world.H = 100
 
 drawTerra(W, H)
