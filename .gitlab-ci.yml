@@ -1,0 +1,32 @@
+stages:
+  - install
+  - build
+  - pages
+
+cache:
+  paths:
+  - node_modules/
+
+install:
+  stage: install
+  script:
+  - yarn
+
+build:
+  stage: build
+  script:
+  - yarn build
+  artifacts:
+    paths:
+    - dist
+
+pages:
+  stage: pages
+  script:
+  - mv ./public ./public-old
+  - mv ./dist ./public
+  artifacts:
+    paths:
+    - public
+  only:
+  - master

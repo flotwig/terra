@@ -158,7 +158,7 @@ function drawTerra(W, H) {
   //   transparent: true
   // }))
   // const mat = new THREE.MeshDepthMaterial({ side: THREE.DoubleSide, visible: true, transparent: false, depthTest: true, depthWrite: true, wireframe: true })
-  const mat = new THREE.MeshPhongMaterial()
+  const mat = new THREE.MeshStandardMaterial({ color: 0x00ff00 })
   var mesh= world.mesh = new THREE.Mesh( geom, mat );
   mesh.castShadow = true
   mesh.receiveShadow = true
