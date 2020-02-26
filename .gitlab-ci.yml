@@ -23,7 +23,6 @@ build:
 pages:
   stage: pages
   script:
-  - mv ./public ./public-old
   - mv ./dist ./public
   artifacts:
     paths:
