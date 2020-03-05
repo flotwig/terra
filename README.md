@@ -2,7 +2,7 @@
 
 WIP
 
-https://terra.chary.us
+https://terra.insolent.studio/
 
 Controls:
 
