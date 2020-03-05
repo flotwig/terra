@@ -3,16 +3,32 @@
   "version": "0.0.0-development",
   "main": "index.js",
   "license": "MIT",
-  "private": true,
+  "private": false,
   "devDependencies": {
+    "@cypress/eslint-plugin-dev": "^5.0.0",
+    "eslint": "^6.8.0",
+    "eslint-plugin-json-format": "^2.0.1",
     "parcel": "^1.12.4"
   },
   "scripts": {
     "start": "parcel ./src/index.html",
+    "lint": "eslint src/",
     "build": "parcel build ./src/index.html"
   },
   "dependencies": {
     "eventemitter3": "^4.0.0",
     "three": "^0.113.2"
+  },
+  "eslintConfig": {
+    "plugins": [
+      "@cypress/dev"
+    ],
+    "extends": [
+      "plugin:@cypress/dev/general"
+    ],
+    "globals": {
+      "document": false,
+      "window": false
+    }
   }
 }

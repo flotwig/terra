@@ -1,5 +1,6 @@
 stages:
   - install
+  - test
   - build
   - pages
 
@@ -11,6 +12,11 @@ install:
   stage: install
   script:
   - yarn
+
+test:
+  stage: test
+  script:
+  - yarn lint
 
 build:
   stage: build

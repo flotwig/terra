@@ -1,4 +1,4 @@
-const THREE = require('three')
+import Config from '../config'
 
 // between -1 and 1
 const getTerraformingPower = (buttons) => {
@@ -13,19 +13,17 @@ const getTerraformingPower = (buttons) => {
   return 0
 }
 
-const MAX_Z = 100
-const MIN_Z = -50
-
 const getOnWorldFrame = ({ buttons, getPointerIntersections }) => {
-  let targetZ;
+  let targetZ
 
   return (world) => {
     if (!buttons.primary && !buttons.secondary) {
       targetZ = undefined
+
       return
     }
 
-    const { F, W, H, facesToRowColumns, geom } = world
+    const { F, facesToRowColumns, geom } = world
 
     const Va = geom.vertices
 
@@ -36,18 +34,20 @@ const getOnWorldFrame = ({ buttons, getPointerIntersections }) => {
         }
 
         return function smoothen (face, increment) {
-          ;([face.a, face.b, face.c]).forEach(vi => {
+          ([face.a, face.b, face.c]).forEach((vi) => {
             const v = Va[vi]
             const diff = targetZ - v.z
+
             v.z += .5 * Math.abs(increment) * diff
           })
         }
       }
 
-      return function shape(face, increment) {
-        ;([face.a, face.b, face.c]).forEach(vi => {
+      return function shape (face, increment) {
+        ([face.a, face.b, face.c]).forEach((vi) => {
           const v = Va[vi]
-          v.z = Math.min(Math.max(v.z + increment, MIN_Z), MAX_Z)
+
+          v.z = Math.min(Math.max(v.z + increment, Config.minZ), Config.maxZ)
         })
       }
     }
@@ -64,19 +64,25 @@ const getOnWorldFrame = ({ buttons, getPointerIntersections }) => {
 
       let otherFaces = []
 
-      if (column + 1 < W * 2 - 2) {
-        otherFaces.push(F[row][column+1])
+      if (column + 1 < Config.W * 2 - 2) {
+        otherFaces.push(F[row][column + 1])
       }
+
       if (column - 1 >= 0) {
-        otherFaces.push(F[row][column-1])
+        otherFaces.push(F[row][column - 1])
       }
-      if (row + 1 < H - 1) {
-        otherFaces.push(F[row+1][column])
+
+      if (row + 1 < Config.H - 1) {
+        otherFaces.push(F[row + 1][column])
       }
+
       if (row - 1 >= 0) {
-        otherFaces.push(F[row-1][column])
+        otherFaces.push(F[row - 1][column])
       }
+
       otherFaces.map((face) => terraFn(face, incrementMultiplier * .5))
+
+      geom.verticesNeedUpdate = true
     })
   }
 }

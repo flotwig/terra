@@ -4,48 +4,37 @@
   <link href="./style.css" rel="stylesheet"/>
 </head>
 <body>
-  <!-- <script id="vertexShader" type="x-shader/x-vertex">
-
-    precision mediump float;
-    precision mediump int;
-
-    uniform mat4 modelViewMatrix; // optional
-    uniform mat4 projectionMatrix; // optional
-
-    attribute vec3 position;
-    attribute vec4 color;
-
+  <script id="vertexShader" type="x-shader/x-vertex">
     varying vec3 vPosition;
-    varying vec4 vColor;
+    // varying vec4 vColor;
 
     void main()	{
 
       vPosition = position;
-      vColor = color;
+      // vColor = color;
 
       gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
 
     }
 
   </script>
-  <script id="triShader" type="x-shader/x-fragment">
-    precision mediump float;
-    precision mediump int;
+  <script id="fragmentShader" type="x-shader/x-fragment">
+    // precision mediump float;
+    // precision mediump int;
 
     varying vec3 vPosition;
-    varying vec4 vColor;
+    // varying vec4 vColor;
 
-    void main()	{
+    // uniform float u_time;
+    // uniform vec2 u_resolution;
+    uniform vec2 zRange;
 
-      vec4 color = vec4( vColor );
-      color.a += vPosition.z / 5.0;
-      color.b += vPosition.z / 5.0;
-      color.r += vPosition.z / 5.0;
 
-      gl_FragColor = color;
-
+    void main() {
+      float p = (vPosition.z + zRange.x) / (zRange.x - zRange.y);
+      gl_FragColor = vec4(0,p/2.0 + 0.4, .1 * p,1.0);
     }
-  </script> -->
+  </script>
   <script src="./index.js"></script>
 </body>
 </html>

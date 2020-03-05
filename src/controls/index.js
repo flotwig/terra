@@ -1,23 +1,23 @@
-const cameraControls = require('./camera')
-const terraformingControls = require('./terraforming')
-const THREE = require('three')
+import cameraControls from './camera'
+import terraformingControls from './terraforming'
+import { Vector2, Raycaster } from 'three'
 
-function install({
+function install ({
   camera,
   world,
   scene,
-  renderer
+  renderer,
 }) {
-  const mouse = new THREE.Vector2()
+  const mouse = new Vector2()
   const buttons = {
     primary: false,
     secondary: false,
-    auxiliary: false
+    auxiliary: false,
   }
 
   const onMouseMove = (event) => {
-    mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
-    mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+    mouse.x = (event.clientX / window.innerWidth) * 2 - 1
+    mouse.y = -(event.clientY / window.innerHeight) * 2 + 1
 
     // https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent/buttons
     buttons.primary = event.buttons & 1
@@ -34,13 +34,13 @@ function install({
   renderer.domElement.addEventListener('contextmenu', onContextMenu)
 
   const getPointerIntersections = () => {
-    const raycaster = new THREE.Raycaster()
+    const raycaster = new Raycaster()
 
     // update the picking ray with the camera and mouse position
-    raycaster.setFromCamera( mouse, camera );
+    raycaster.setFromCamera(mouse, camera)
 
     // calculate objects intersecting the picking ray
-    return raycaster.intersectObjects( scene.children );
+    return raycaster.intersectObjects(scene.children)
   }
 
   world.on('frame', cameraControls.getOnWorldFrame({ renderer, camera }))
