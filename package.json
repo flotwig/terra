@@ -17,7 +17,7 @@
   },
   "dependencies": {
     "eventemitter3": "^4.0.0",
-    "three": "^0.113.2"
+    "three": "^0.137.0"
   },
   "eslintConfig": {
     "plugins": [
